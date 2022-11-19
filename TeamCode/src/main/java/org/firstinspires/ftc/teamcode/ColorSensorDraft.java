@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 //making this an autonomous code, not a TeleOP
 @Autonomous(name = "ColorSensorAutonomous", group = "Robot")
 public class ColorSensorDraft extends LinearOpMode {
-
+    
     //prolly initializing color and ColorSensor is the type
     ColorSensor color;
 
