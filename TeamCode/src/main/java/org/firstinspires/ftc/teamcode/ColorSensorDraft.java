@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 //making this an autonomous code, not a TeleOP
 @Autonomous(name = "ColorSensorAutonomous", group = "Robot")
 public class ColorSensorDraft extends LinearOpMode {
-    
+
     //prolly initializing color and ColorSensor is the type
     ColorSensor color;
 
@@ -33,7 +33,7 @@ public class ColorSensorDraft extends LinearOpMode {
     static final double     DRIVE_SPEED             = 0.6;
     static final double     TURN_SPEED              = 0.5;
 
-    //idk what this is
+    //idk what this is - runOpMode is a predefined method in the LinearOpMode Class. This overrides the exsisting method
     @Override
     //the part that actually runs stuff i think
     public void runOpMode() {
