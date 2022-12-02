@@ -46,7 +46,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 
 public class NonPOVMovement extends LinearOpMode {
 
-    static final double DAMPENER = 1;
+    static final double DAMPENER = .75;
     static final double TURN_DAMPENER = 1;
 
     public DcMotor frontRight  = null;
@@ -159,7 +159,7 @@ public class NonPOVMovement extends LinearOpMode {
             double v4Final = v4 * v4;
             if (v4 < 0) {
                 v4Final = -1 * v4Final;
-            }
+            } 
 
             frontLeft.setPower(DAMPENER * v1Final);
             frontRight.setPower(DAMPENER * v2Final);
