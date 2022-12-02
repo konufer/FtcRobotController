@@ -49,57 +49,45 @@ public class AutoSlideTest extends LinearOpMode {
     public DcMotor lineSlide = null;
     public CRServo servo;
 
-    double[] positionHeights = {3.5, 13.5, 23.5, 33.5};
-    double COUNTS_PER_MOTOR_REV = 300;
-    double DISTANCE_MOVED_PER_REVOLUTION = 1;
-    public LinearSlide linearSlide = new LinearSlide(lineSlide, positionHeights, COUNTS_PER_MOTOR_REV, DISTANCE_MOVED_PER_REVOLUTION);
-
     @Override
     public void runOpMode() {
         lineSlide = hardwareMap.get(DcMotor.class, "lineSlide");
         servo = hardwareMap.get(CRServo.class, "armServo");
 
+        PinchServo pinchServo = new PinchServo(servo);
+
+        double[] positionHeights = {3.5, 13.5, 23.5, 33.5};
+        double COUNTS_PER_MOTOR_REV = 1120;  //AndyMark NeveRest 40:1
+        double WHEEL_DIAMETER_INCHES = 1.5;
+        LinearSlide linearSlide = new LinearSlide(lineSlide, positionHeights, COUNTS_PER_MOTOR_REV, WHEEL_DIAMETER_INCHES);
+
 
         while (opModeIsActive()) {
 
             if(gamepad1.dpad_down){
-
+                linearSlide.moveToPosition(0);
             }
 
             if(gamepad1.dpad_left){
+                linearSlide.moveToPosition(1);
 
             }
             if(gamepad1.dpad_up){
+                linearSlide.moveToPosition(2);
 
             }
             if(gamepad1.dpad_right){
+                linearSlide.moveToPosition(3);
 
             }
-
-            if (gamepad1.right_trigger != 0){
-                lineSlide.setPower(gamepad1.right_trigger);
-            }
-            else if (gamepad1.left_trigger != 0){
-                lineSlide.setPower(-gamepad1.left_trigger);
-            }
-
-            else{
-                lineSlide.setPower(0);
-            }
-
 
             if(gamepad1.b){
-                servo.setPower(1.0);
+                pinchServo.pinchObject();
             }
 
             if(gamepad1.a){
-                servo.setPower(-1.0);
-                sleep(500);
-                servo.setPower(-0.05);
+                pinchServo.releaseObject();
             }
-
-
-
 
         }
     }

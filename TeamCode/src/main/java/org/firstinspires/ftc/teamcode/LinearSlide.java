@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class LinearSlide {
 
-    public static DcMotor lineSlide;
+    public DcMotor lineSlide;
 
     //In inches
     public double[] positionHeights;
@@ -13,20 +13,20 @@ public class LinearSlide {
     public int lineSlideTarget;
 
     final double COUNTS_PER_MOTOR_REV;
-    final double DISTANCE_MOVED_PER_REVOLUTION;
+    final double WHEEL_DIAMETER_INCHES;
     final double COUNTS_PER_INCH;
 
 
 
-    public LinearSlide(DcMotor lineSlide, double[] positionHeights, double COUNTS_PER_MOTOR_REV, double DISTANCE_MOVED_PER_REVOLUTION){
+    public LinearSlide(DcMotor lineSlide, double[] positionHeights, double COUNTS_PER_MOTOR_REV, double WHEEL_DIAMETER_INCHES){
         this.lineSlide = lineSlide;
 
         currentPosition = 0;
 
         this.positionHeights = positionHeights;
-        this.COUNTS_PER_MOTOR_REV = 537.7 ;   // eg: GoBILDA 312 RPM Yellow Jacket
-        this.DISTANCE_MOVED_PER_REVOLUTION = 42;
-        COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV) / (DISTANCE_MOVED_PER_REVOLUTION * 3.1415);
+        this.COUNTS_PER_MOTOR_REV = COUNTS_PER_MOTOR_REV;
+        this.WHEEL_DIAMETER_INCHES = WHEEL_DIAMETER_INCHES;
+        COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV) / (WHEEL_DIAMETER_INCHES * 3.1415);
 
 
     }
@@ -47,6 +47,8 @@ public class LinearSlide {
         while(lineSlide.isBusy()){
             lineSlide.setPower(1.0);
         }
+
+        lineSlide.setPower(0.0);
     }
 
 
