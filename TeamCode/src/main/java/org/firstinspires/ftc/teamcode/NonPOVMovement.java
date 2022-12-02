@@ -106,7 +106,7 @@ public class NonPOVMovement extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-
+/*
             if (gamepad1.x){
                 double robotHeading = gyro.getRawHeading();
                 move.turnToHeading(TURN_DAMPENER, robotHeading - Math.PI/2);
@@ -123,7 +123,7 @@ public class NonPOVMovement extends LinearOpMode {
                 continue;
             }
 
-
+*/
 
 
             //The Mecanum Wheel math
@@ -159,7 +159,7 @@ public class NonPOVMovement extends LinearOpMode {
             double v4Final = v4 * v4;
             if (v4 < 0) {
                 v4Final = -1 * v4Final;
-            } 
+            }
 
             frontLeft.setPower(DAMPENER * v1Final);
             frontRight.setPower(DAMPENER * v2Final);
