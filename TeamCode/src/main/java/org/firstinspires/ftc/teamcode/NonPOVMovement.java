@@ -33,9 +33,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-
-import org.firstinspires.ftc.teamcode.GyroClass;
-import org.firstinspires.ftc.teamcode.MoveRobot;
+import com.qualcomm.robotcore.hardware.CRServo;
 
 /**
  * Mecanum Wheel OpMode that uses a gyro
@@ -48,14 +46,17 @@ import org.firstinspires.ftc.teamcode.MoveRobot;
 
 public class NonPOVMovement extends LinearOpMode {
 
-    static final double DAMPENER = 0.35;
-    static final double TURN_DAMPENER = 0.8;
+    static final double DAMPENER = 1;
+    static final double TURN_DAMPENER = 1;
 
     public DcMotor frontRight  = null;
     public DcMotor frontLeft  = null;
     public DcMotor backLeft  = null;
     public DcMotor backRight  = null;
 
+    public DcMotor lineSlide = null;
+
+    CRServo servo;
     public static BNO055IMU imu;
 
     @Override
@@ -65,6 +66,9 @@ public class NonPOVMovement extends LinearOpMode {
         frontRight  = hardwareMap.get(DcMotor.class, "frontRight"); // port 1
         backLeft  = hardwareMap.get(DcMotor.class, "backLeft"); //  port 2
         backRight  = hardwareMap.get(DcMotor.class, "backRight"); // port 3
+
+        lineSlide = hardwareMap.get(DcMotor.class, "lineSlide");
+        servo = hardwareMap.get(CRServo.class, "armServo");
 
         //Motors on the left need to be reversed
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -112,7 +116,7 @@ public class NonPOVMovement extends LinearOpMode {
 
 
 
-            if (gamepad1.a){
+            if (gamepad1.y){
                 double robotHeading = gyro.getRawHeading();
                 move.turnToHeading(TURN_DAMPENER, robotHeading + Math.PI/2);
                 move.holdHeading(TURN_DAMPENER, robotHeading + Math.PI/2,0.5);
@@ -161,6 +165,32 @@ public class NonPOVMovement extends LinearOpMode {
             frontRight.setPower(DAMPENER * v2Final);
             backLeft.setPower(DAMPENER * v3Final);
             backRight.setPower(DAMPENER * v4Final);
+
+            if (gamepad1.right_trigger != 0){
+                lineSlide.setPower(gamepad1.right_trigger);
+            }
+            else if (gamepad1.left_trigger != 0){
+                lineSlide.setPower(-gamepad1.left_trigger);
+            }
+
+            else{
+                lineSlide.setPower(0);
+            }
+
+
+            if(gamepad1.b){
+                servo.setPower(1.0);
+            }
+
+            if(gamepad1.a){
+                servo.setPower(-1.0);
+                sleep(500);
+                servo.setPower(-0.05);
+            }
+
+
+
+
         }
     }
 }
