@@ -167,10 +167,10 @@ public class NonPOVMovement extends LinearOpMode {
             backRight.setPower(DAMPENER * v4Final);
 
             if (gamepad1.right_trigger != 0){
-                lineSlide.setPower(gamepad1.right_trigger);
+                lineSlide.setPower(-gamepad1.right_trigger);
             }
             else if (gamepad1.left_trigger != 0){
-                lineSlide.setPower(-gamepad1.left_trigger);
+                lineSlide.setPower(gamepad1.left_trigger);
             }
 
             else{
