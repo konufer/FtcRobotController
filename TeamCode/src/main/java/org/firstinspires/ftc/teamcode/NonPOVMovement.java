@@ -46,7 +46,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 
 public class NonPOVMovement extends LinearOpMode {
 
-    static final double DAMPENER = .75;
+    static final double DAMPENER = .5;
     static final double TURN_DAMPENER = 1;
 
     public DcMotor frontRight  = null;
@@ -84,6 +84,8 @@ public class NonPOVMovement extends LinearOpMode {
         gyro.resetHeading();
 
         MoveRobot move = new MoveRobot(frontLeft, frontRight, backLeft, backRight, gyro);
+
+        PinchServo pinchServo = new PinchServo(servo);
 
    /**     // Ensure the robot is stationary.  Reset the encoders and set the motors to BRAKE mode
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -167,10 +169,10 @@ public class NonPOVMovement extends LinearOpMode {
             backRight.setPower(DAMPENER * v4Final);
 
             if (gamepad1.right_trigger != 0){
-                lineSlide.setPower(gamepad1.right_trigger);
+                lineSlide.setPower(-gamepad1.right_trigger);
             }
             else if (gamepad1.left_trigger != 0){
-                lineSlide.setPower(-gamepad1.left_trigger);
+                lineSlide.setPower(gamepad1.left_trigger);
             }
 
             else{

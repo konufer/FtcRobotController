@@ -17,7 +17,7 @@ public class PinchServo {
     }
 
     public void pinchObject(){
-    pinchServo.setPower(1.0);
+        pinchServo.setPower(1.0);
     }
 
     public void releaseObject(){
