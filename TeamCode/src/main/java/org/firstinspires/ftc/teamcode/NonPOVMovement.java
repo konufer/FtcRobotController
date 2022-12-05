@@ -107,27 +107,7 @@ public class NonPOVMovement extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-
-/*
-            if (gamepad1.x){
-                double robotHeading = gyro.getRawHeading();
-                move.turnToHeading(TURN_DAMPENER, robotHeading - Math.PI/2);
-                move.holdHeading(TURN_DAMPENER, robotHeading - Math.PI/2,0.5);
-                continue;
-            }
-
-
-
-            if (gamepad1.y){
-                double robotHeading = gyro.getRawHeading();
-                move.turnToHeading(TURN_DAMPENER, robotHeading + Math.PI/2);
-                move.holdHeading(TURN_DAMPENER, robotHeading + Math.PI/2,0.5);
-                continue;
-            }
-
-*/
-
-
+            
             //The Mecanum Wheel math
             double r = Math.hypot(gamepad1.left_stick_x, -gamepad1.left_stick_y);
             double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
