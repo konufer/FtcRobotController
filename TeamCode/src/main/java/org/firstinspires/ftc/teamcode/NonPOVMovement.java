@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  * Mecanum Wheel OpMode that uses a gyro
@@ -84,6 +85,7 @@ public class NonPOVMovement extends LinearOpMode {
         gyro.resetHeading();
 
         MoveRobot move = new MoveRobot(frontLeft, frontRight, backLeft, backRight, gyro);
+        ElapsedTime runtime = new ElapsedTime();
 
    /**     // Ensure the robot is stationary.  Reset the encoders and set the motors to BRAKE mode
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -105,27 +107,7 @@ public class NonPOVMovement extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-
-/*
-            if (gamepad1.x){
-                double robotHeading = gyro.getRawHeading();
-                move.turnToHeading(TURN_DAMPENER, robotHeading - Math.PI/2);
-                move.holdHeading(TURN_DAMPENER, robotHeading - Math.PI/2,0.5);
-                continue;
-            }
-
-
-
-            if (gamepad1.y){
-                double robotHeading = gyro.getRawHeading();
-                move.turnToHeading(TURN_DAMPENER, robotHeading + Math.PI/2);
-                move.holdHeading(TURN_DAMPENER, robotHeading + Math.PI/2,0.5);
-                continue;
-            }
-
-*/
-
-
+            
             //The Mecanum Wheel math
             double r = Math.hypot(gamepad1.left_stick_x, -gamepad1.left_stick_y);
             double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
@@ -167,10 +149,10 @@ public class NonPOVMovement extends LinearOpMode {
             backRight.setPower(DAMPENER * v4Final);
 
             if (gamepad1.right_trigger != 0){
-                lineSlide.setPower(gamepad1.right_trigger);
+                lineSlide.setPower(-gamepad1.right_trigger);
             }
             else if (gamepad1.left_trigger != 0){
-                lineSlide.setPower(-gamepad1.left_trigger);
+                lineSlide.setPower(gamepad1.left_trigger);
             }
 
             else{
@@ -183,8 +165,10 @@ public class NonPOVMovement extends LinearOpMode {
             }
 
             if(gamepad1.a){
-                servo.setPower(-1.0);
-                sleep(500);
+                runtime.reset();
+                while (runtime.seconds() < 0.5) {
+                    servo.setPower(-1.0);
+                }
                 servo.setPower(-0.05);
             }
 

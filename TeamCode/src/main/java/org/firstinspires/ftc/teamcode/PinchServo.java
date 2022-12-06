@@ -2,10 +2,13 @@ package org.firstinspires.ftc.teamcode;
 
 import static android.os.SystemClock.sleep;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class PinchServo {
 
     public CRServo pinchServo;
+
+    ElapsedTime runtime = new ElapsedTime();
 
     public PinchServo(CRServo pinchServo){
         this.pinchServo = pinchServo;
@@ -21,9 +24,11 @@ public class PinchServo {
     }
 
     public void releaseObject(){
-    pinchServo.setPower(-1.0);
-    sleep(500);
-    stop();
+        runtime.reset();
+        while (runtime.seconds() < 0.5) {
+            pinchServo.setPower(-1.0);
+        }
+        stop();
     }
 
 }
