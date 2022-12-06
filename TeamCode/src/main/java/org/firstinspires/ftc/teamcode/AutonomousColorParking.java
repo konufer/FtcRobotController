@@ -19,7 +19,7 @@ public class AutonomousColorParking extends LinearOpMode {
     public DcMotor backRight = null;
     public DcMotor backLeft = null;
 
-    ColourSensor colour = new ColourSensor(color);
+    ColorSensing colorSensor = new ColorSensing(color);
 
     EncodedDriving drive = new EncodedDriving(frontLeft, frontRight, backLeft, backRight, lineSlide);
     PinchServo arm = new PinchServo(servo);
@@ -46,7 +46,7 @@ public class AutonomousColorParking extends LinearOpMode {
         drive.encoderDrive(DRIVE_SPEED, 15.5, 15.5, 15.5, 15.5);
         drive.encoderDrive(DRIVE_SPEED, 8.75, -8.75, -8.75, 8.75);
 
-        colour.getColors();
+        colorSensor.getColors();
 
         drive.encoderDrive(TURN_SPEED, -8.75, 8.75, 8.75, -8.75);
         drive.encoderDrive(DRIVE_SPEED, -15.5, -15.5, -15.5, -15.5);
@@ -59,7 +59,7 @@ public class AutonomousColorParking extends LinearOpMode {
         drive.encoderDrive(DRIVE_SPEED, -11.5, -11.5, -11.5, -11.5);
         drive.encoderDrive(TURN_SPEED, 12.75, -12.75, -12.75, 12.75);
 
-        String colorDetected = colour.colorPath();
+        String colorDetected = colorSensor.colorPath();
         telemetry.addData("Color Detected", colorDetected);
         if (colorDetected.equals("red")) {
             drive.encoderDrive(TURN_SPEED, -24, 24,24, -24);

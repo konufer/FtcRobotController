@@ -4,14 +4,14 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
-public class ColourSensor {
+public class ColorSensing {
     public static ColorSensor color;
 
     public int red;
     public int green;
     public int blue;
 
-    public ColourSensor(ColorSensor color){
+    public ColorSensing(ColorSensor color){
         this.color = color;
     }
 
