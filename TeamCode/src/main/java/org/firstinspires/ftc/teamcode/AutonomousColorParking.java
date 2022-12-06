@@ -31,15 +31,7 @@ public class AutonomousColorParking extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        color = hardwareMap.get(ColorSensor.class, "color");
-
-        servo = hardwareMap.get(CRServo.class, "armServo");
-        lineSlide = hardwareMap.get(DcMotor.class, "lineSlide");
-
-        frontLeft  = hardwareMap.get(DcMotor.class, "frontLeft");
-        frontRight  = hardwareMap.get(DcMotor.class, "frontRight");
-        backLeft  = hardwareMap.get(DcMotor.class, "backLeft");
-        backRight  = hardwareMap.get(DcMotor.class, "backRight");
+        mapHardware();
 
         drive.encodeMode();
 
@@ -81,5 +73,17 @@ public class AutonomousColorParking extends LinearOpMode {
             drive.encoderDrive(DRIVE_SPEED, 26, 26, 26, 26);
         }
 
+    }
+
+    public void mapHardware() {
+        color = hardwareMap.get(ColorSensor.class, "color");
+
+        servo = hardwareMap.get(CRServo.class, "armServo");
+        lineSlide = hardwareMap.get(DcMotor.class, "lineSlide");
+
+        frontLeft  = hardwareMap.get(DcMotor.class, "frontLeft");
+        frontRight  = hardwareMap.get(DcMotor.class, "frontRight");
+        backLeft  = hardwareMap.get(DcMotor.class, "backLeft");
+        backRight  = hardwareMap.get(DcMotor.class, "backRight");
     }
 }
