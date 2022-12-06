@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class EncodedDriving {
+
     //declaration of motors
     public DcMotor frontLeft;
     public DcMotor frontRight;
@@ -10,6 +12,16 @@ public class EncodedDriving {
     public DcMotor backRight;
 
     public DcMotor lineSlide;
+
+    public EncodedDriving(DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight, DcMotor lineSlide){
+        this.frontLeft = frontLeft;
+        this.frontRight = frontRight;
+        this.backLeft = backLeft;
+        this.backRight = backRight;
+
+        this.lineSlide = lineSlide;
+    }
+
 
     //REV HD Hex motor numbers for mechanum wheels
     static final double COUNTS_PER_MOTOR_REV = 560;
