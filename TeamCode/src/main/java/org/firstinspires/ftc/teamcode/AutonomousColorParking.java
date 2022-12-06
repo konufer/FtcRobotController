@@ -9,15 +9,17 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @Autonomous(name="ColorSensorParking", group = "Robot")
 public class AutonomousColorParking extends LinearOpMode {
 
-    ColorSensor color;
+    public ColorSensor color;
 
-    CRServo servo;
+    public CRServo servo;
     public DcMotor lineSlide = null;
 
     public DcMotor frontRight = null;
     public DcMotor frontLeft = null;
     public DcMotor backRight = null;
     public DcMotor backLeft = null;
+
+    ColourSensor colour = new ColourSensor(color);
 
     EncodedDriving drive = new EncodedDriving(frontLeft, frontRight, backLeft, backRight, lineSlide);
     PinchServo arm = new PinchServo(servo);
@@ -52,14 +54,7 @@ public class AutonomousColorParking extends LinearOpMode {
         drive.encoderDrive(DRIVE_SPEED, 15.5, 15.5, 15.5, 15.5);
         drive.encoderDrive(DRIVE_SPEED, 8.75, -8.75, -8.75, 8.75);
 
-        int red = color.red();
-        int green = color.green();
-        int blue = color.blue();
-
-        telemetry.addData("red", red);
-        telemetry.addData("green", green);
-        telemetry.addData("blue", blue);
-        telemetry.update();
+        colour.getColors();
 
         drive.encoderDrive(TURN_SPEED, -8.75, 8.75, 8.75, -8.75);
         drive.encoderDrive(DRIVE_SPEED, -15.5, -15.5, -15.5, -15.5);
@@ -72,19 +67,18 @@ public class AutonomousColorParking extends LinearOpMode {
         drive.encoderDrive(DRIVE_SPEED, -11.5, -11.5, -11.5, -11.5);
         drive.encoderDrive(TURN_SPEED, 12.75, -12.75, -12.75, 12.75);
 
-        if ((red > green) && (red > blue)) {
+        String colorDetected = colour.colorPath();
+        telemetry.addData("Color Detected", colorDetected);
+        if (colorDetected.equals("red")) {
             drive.encoderDrive(TURN_SPEED, -24, 24,24, -24);
             drive.encoderDrive(DRIVE_SPEED, 26, 26, 26, 26);
-            telemetry.addData("Color Detected", "Red");
         }
-        if ((green > red) && (green > blue)) {
+        if (colorDetected.equals("green")) {
             drive.encoderDrive(DRIVE_SPEED, 26, 26, 26, 26);
-            telemetry.addData("Color Detected", "Green");
         }
-        if ((blue > red) && (blue > green)) {
+        if (colorDetected.equals("blue")) {
             drive.encoderDrive(TURN_SPEED, -24, 24,24, -24);
             drive.encoderDrive(DRIVE_SPEED, 26, 26, 26, 26);
-            telemetry.addData("Color Detected", "Blue");
         }
 
     }
