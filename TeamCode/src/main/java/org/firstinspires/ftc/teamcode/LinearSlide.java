@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class LinearSlide {
@@ -28,6 +30,9 @@ public class LinearSlide {
         this.WHEEL_DIAMETER_INCHES = WHEEL_DIAMETER_INCHES;
         COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV) / (WHEEL_DIAMETER_INCHES * 3.1415);
 
+        //Set up encoders
+        lineSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lineSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
 
@@ -36,16 +41,20 @@ public class LinearSlide {
         return distanceDiff;
     }
 
-    public void moveToPosition(int desiredPosition){
+    public void moveToPosition(double speed, int desiredPosition){
         double distance = distanceToMove(desiredPosition);
 
         int moveCounts = (int)(distance * COUNTS_PER_INCH);
         lineSlideTarget = lineSlide.getCurrentPosition() + moveCounts;
         lineSlide.setTargetPosition(lineSlideTarget);
         lineSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        currentPosition = desiredPosition;
 
         while(lineSlide.isBusy()){
-            lineSlide.setPower(1.0);
+            lineSlide.setPower(speed);
+            telemetry.addData("Running to",  " %7d", lineSlideTarget);
+            telemetry.addData("Currently at",  " at %7d", lineSlide.getCurrentPosition());
+            telemetry.update();
         }
 
         lineSlide.setPower(0.0);

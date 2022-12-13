@@ -46,8 +46,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class AutoSlideTest extends LinearOpMode {
 
-    public DcMotor lineSlide = null;
+    public DcMotor lineSlide;
     public CRServo servo;
+
+    public static double SLIDE_SPEED = 1.0;
 
     @Override
     public void runOpMode() {
@@ -57,27 +59,25 @@ public class AutoSlideTest extends LinearOpMode {
         PinchServo pinchServo = new PinchServo(servo);
 
         double[] positionHeights = {3.5, 13.5, 23.5, 33.5};
-        double COUNTS_PER_MOTOR_REV = 1120;  //AndyMark NeveRest 40:1
-        double WHEEL_DIAMETER_INCHES = 1.5;
-        LinearSlide linearSlide = new LinearSlide(lineSlide, positionHeights, COUNTS_PER_MOTOR_REV, WHEEL_DIAMETER_INCHES);
+        LinearSlide linearSlide = new LinearSlide(lineSlide, positionHeights, 1120, 1.5); //AndyMark NeveRest 40:1
 
-
+        waitForStart();
         while (opModeIsActive()) {
 
             if(gamepad1.dpad_down){
-                linearSlide.moveToPosition(0);
+                linearSlide.moveToPosition(SLIDE_SPEED, 0);
             }
 
             if(gamepad1.dpad_left){
-                linearSlide.moveToPosition(1);
+                linearSlide.moveToPosition(SLIDE_SPEED, 1);
 
             }
             if(gamepad1.dpad_up){
-                linearSlide.moveToPosition(2);
+                linearSlide.moveToPosition(SLIDE_SPEED, 2);
 
             }
             if(gamepad1.dpad_right){
-                linearSlide.moveToPosition(3);
+                linearSlide.moveToPosition(SLIDE_SPEED, 3);
 
             }
 

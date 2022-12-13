@@ -20,10 +20,10 @@ public class ColorSensing {
         green = color.green();
         blue = color.blue();
 
-        telemetry.addData("Red", red);
+       /* telemetry.addData("Red", red);
         telemetry.addData("Green", green);
         telemetry.addData("Blue", blue);
-        telemetry.update();
+        telemetry.update();*/
     }
 
     public String colorPath() {
