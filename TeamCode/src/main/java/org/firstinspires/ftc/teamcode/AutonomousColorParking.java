@@ -88,10 +88,10 @@ public class AutonomousColorParking extends LinearOpMode {
     }
 
     public void detectColors() {
-        int[] colorvalues = colorSensor.getColors();
+        int[] colorValues = colorSensor.getColors();
 
-        telemetry.addData("Red:", colorvalues[0]);
-        telemetry.addData("Green:", colorvalues[1]);
-        telemetry.addData("Blue:", colorvalues[2]);
+        telemetry.addData("Red:", colorValues[0]);
+        telemetry.addData("Green:", colorValues[1]);
+        telemetry.addData("Blue:", colorValues[2]);
     }
 }
