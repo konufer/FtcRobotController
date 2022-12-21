@@ -46,7 +46,7 @@ public class AutonomousColorParking extends LinearOpMode {
         drive.encoderDrive(DRIVE_SPEED, 15.5, 15.5, 15.5, 15.5);
         drive.encoderDrive(DRIVE_SPEED, 8.75, -8.75, -8.75, 8.75);
 
-        colorSensor.getColors();
+        detectColors();
 
         drive.encoderDrive(TURN_SPEED, -8.75, 8.75, 8.75, -8.75);
         drive.encoderDrive(DRIVE_SPEED, -15.5, -15.5, -15.5, -15.5);
@@ -85,5 +85,13 @@ public class AutonomousColorParking extends LinearOpMode {
         frontRight  = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft  = hardwareMap.get(DcMotor.class, "backLeft");
         backRight  = hardwareMap.get(DcMotor.class, "backRight");
+    }
+
+    public void detectColors() {
+        int[] colorvalues = colorSensor.getColors();
+
+        telemetry.addData("Red:", colorvalues[0]);
+        telemetry.addData("Green:", colorvalues[1]);
+        telemetry.addData("Blue:", colorvalues[2]);
     }
 }

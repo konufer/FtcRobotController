@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
@@ -15,15 +14,13 @@ public class ColorSensing {
         this.color = color;
     }
 
-    public void getColors() {
+    public int[] getColors() {
         red = color.red();
         green = color.green();
         blue = color.blue();
 
-       /* telemetry.addData("Red", red);
-        telemetry.addData("Green", green);
-        telemetry.addData("Blue", blue);
-        telemetry.update();*/
+       int[] colorValues = {red, green, blue};
+       return colorValues;
     }
 
     public String colorPath() {
