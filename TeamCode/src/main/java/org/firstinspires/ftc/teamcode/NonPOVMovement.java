@@ -33,7 +33,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -57,7 +57,7 @@ public class NonPOVMovement extends LinearOpMode {
 
     public DcMotor lineSlide = null;
 
-    CRServo servo;
+    Servo servo;
     public static BNO055IMU imu;
 
     @Override
@@ -69,7 +69,7 @@ public class NonPOVMovement extends LinearOpMode {
         backRight  = hardwareMap.get(DcMotor.class, "backRight"); // port 3
 
         lineSlide = hardwareMap.get(DcMotor.class, "lineSlide");
-        servo = hardwareMap.get(CRServo.class, "armServo");
+        servo = hardwareMap.get(Servo.class, "armServo");
 
         //Motors on the left need to be reversed
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -107,6 +107,7 @@ public class NonPOVMovement extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+            telemetry.addData(">", "Robot Heading = %4.0f", gyro.getRawHeading());
             
             //The Mecanum Wheel math
             double r = Math.hypot(gamepad1.left_stick_x, -gamepad1.left_stick_y);
@@ -160,21 +161,14 @@ public class NonPOVMovement extends LinearOpMode {
             }
 
 
-            if(gamepad1.b){
-                servo.setPower(1.0);
-            }
-
             if(gamepad1.a){
-                runtime.reset();
-                while (runtime.seconds() < 0.5) {
-                    servo.setPower(-1.0);
-                }
-                servo.setPower(-0.05);
+                servo.setPosition(1.0);
             }
 
-
-
-
+            if(gamepad1.b){
+                servo.setPosition(0.0);
+            }
+            telemetry.update();
         }
     }
 }

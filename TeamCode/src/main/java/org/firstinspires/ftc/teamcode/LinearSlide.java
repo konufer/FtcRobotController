@@ -52,9 +52,9 @@ public class LinearSlide {
 
         while(lineSlide.isBusy()){
             lineSlide.setPower(speed);
-            telemetry.addData("Running to",  " %7d", lineSlideTarget);
+            /*telemetry.addData("Running to",  " %7d", lineSlideTarget);
             telemetry.addData("Currently at",  " at %7d", lineSlide.getCurrentPosition());
-            telemetry.update();
+            telemetry.update();*/
         }
 
         lineSlide.setPower(0.0);

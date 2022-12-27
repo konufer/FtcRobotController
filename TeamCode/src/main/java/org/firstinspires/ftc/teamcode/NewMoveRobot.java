@@ -95,7 +95,7 @@ public class NewMoveRobot {
     }
 
     public void straight(double speed, double distance){
-        encoderDrive(speed, distance, distance, distance, distance);
+        encoderDrive(speed, -distance, -distance, -distance, -distance);
     }
 
     public void sideways(double speed, double distance){

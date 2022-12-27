@@ -29,22 +29,25 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
- * Baisc OpMode that uses Mecanum wheels to drive the robot
- * The left stick translates the robot
- * The right stick rotates it
+ * Mecanum Wheel OpMode that uses a gyro
+ * All controls will move the robot relitive to your position (when you started the program)
+ * Left Stick translates the robot
+ * Right Stick rotates the robot
  */
 
 @TeleOp(name="POV Movement", group="Robot")
 
 public class POVMovement extends LinearOpMode {
 
-    static final double DAMPENER = 0.35;
+    static final double DAMPENER = 0.75;
     static final double TURN_DAMPENER = 0.8;
 
     public DcMotor frontRight  = null;
@@ -52,28 +55,59 @@ public class POVMovement extends LinearOpMode {
     public DcMotor backLeft  = null;
     public DcMotor backRight  = null;
 
+    public DcMotor lineSlide = null;
+
+    Servo servo;
+    public static BNO055IMU imu;
 
     @Override
     public void runOpMode() {
-
         // Map motors to varibles
         frontLeft  = hardwareMap.get(DcMotor.class, "frontLeft"); // port 0
         frontRight  = hardwareMap.get(DcMotor.class, "frontRight"); // port 1
         backLeft  = hardwareMap.get(DcMotor.class, "backLeft"); //  port 2
         backRight  = hardwareMap.get(DcMotor.class, "backRight"); // port 3
 
+        lineSlide = hardwareMap.get(DcMotor.class, "lineSlide");
+        servo = hardwareMap.get(Servo.class, "armServo");
+
         //Motors on the left need to be reversed
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
 
+        //This initializes the gyro sensor within the expansion hub
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
 
+        GyroClass gyro = new GyroClass(imu);
+        gyro.resetHeading();
 
-        // Send telemetry message to signify robot waiting
-        telemetry.addData(">", "Robot Ready.  Press Play.");
-        telemetry.update();
+        MoveRobot move = new MoveRobot(frontLeft, frontRight, backLeft, backRight, gyro);
+        ElapsedTime runtime = new ElapsedTime();
+
+   /**     // Ensure the robot is stationary.  Reset the encoders and set the motors to BRAKE mode
+        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        frontLeft.setMode(DcMotor.DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRight.setMode(DcMotor.DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);   **/
+
+        //For testing purposes
+        while (opModeInInit()) {
+            telemetry.addData(">", "Robot Heading = %4.0f", gyro.getRawHeading());
+            telemetry.update();
+        }
 
         waitForStart();
+
         while (opModeIsActive()) {
+            telemetry.addData(">", "Robot Heading = %4.0f", gyro.getRawHeading());
 
             //The Mecanum Wheel math
             double r = Math.hypot(gamepad1.left_stick_x, -gamepad1.left_stick_y);
@@ -87,30 +121,51 @@ public class POVMovement extends LinearOpMode {
             double v4 = r * Math.cos(robotAngle) - rightX;
 
             //Square dampening
-            double v1Final = v1*v1;
-            if (v1 < 0 ){
+            double v1Final = v1 * v1;
+            if (v1 < 0) {
                 v1Final = -1 * v1Final;
             }
 
-            double v2Final = v2*v2;
-            if (v2 < 0 ){
+            double v2Final = v2 * v2;
+            if (v2 < 0) {
                 v2Final = -1 * v2Final;
             }
 
-            double v3Final = v3*v3;
-            if (v3 < 0 ){
+            double v3Final = v3 * v3;
+            if (v3 < 0) {
                 v3Final = -1 * v3Final;
             }
 
-            double v4Final = v4*v4;
-            if (v4 < 0 ){
+            double v4Final = v4 * v4;
+            if (v4 < 0) {
                 v4Final = -1 * v4Final;
             }
 
-            frontLeft.setPower(DAMPENER*v1Final);
-            frontRight.setPower(DAMPENER*v2Final);
-            backLeft.setPower(DAMPENER*v3Final);
-            backRight.setPower(DAMPENER*v4Final);
+            frontLeft.setPower(DAMPENER * v1Final);
+            frontRight.setPower(DAMPENER * v2Final);
+            backLeft.setPower(DAMPENER * v3Final);
+            backRight.setPower(DAMPENER * v4Final);
+
+            if (gamepad1.right_trigger != 0){
+                lineSlide.setPower(-gamepad1.right_trigger);
+            }
+            else if (gamepad1.left_trigger != 0){
+                lineSlide.setPower(gamepad1.left_trigger);
+            }
+
+            else{
+                lineSlide.setPower(0);
+            }
+
+
+            if(gamepad1.a){
+                servo.setPosition(1.0);
+            }
+
+            if(gamepad1.b){
+                servo.setPosition(0.0);
+            }
+            telemetry.update();
         }
     }
 }

@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -11,7 +11,7 @@ public class AutonomousColorParking extends LinearOpMode {
 
     public ColorSensor color;
 
-    public CRServo servo;
+    public Servo servo;
     public DcMotor lineSlide = null;
 
     public DcMotor frontRight = null;
@@ -78,7 +78,7 @@ public class AutonomousColorParking extends LinearOpMode {
     public void mapHardware() {
         color = hardwareMap.get(ColorSensor.class, "color");
 
-        servo = hardwareMap.get(CRServo.class, "armServo");
+        servo = hardwareMap.get(Servo.class, "armServo");
         lineSlide = hardwareMap.get(DcMotor.class, "lineSlide");
 
         frontLeft  = hardwareMap.get(DcMotor.class, "frontLeft");

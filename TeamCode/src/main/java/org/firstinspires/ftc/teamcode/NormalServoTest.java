@@ -29,68 +29,41 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
-/**
- * Mecanum Wheel OpMode that uses a gyro
- * All controls will move the robot relitive to your position (when you started the program)
- * Left Stick translates the robot
- * Right Stick rotates the robot
- */
+@TeleOp(name = "NormalServoTest", group = "Concept")
 
-@TeleOp(name="Auto Slide Test", group="Robot")
+public class NormalServoTest extends LinearOpMode {
 
-public class AutoSlideTest extends LinearOpMode {
 
-    public DcMotor lineSlide;
-    public Servo servo;
-
-    public static double SLIDE_SPEED = 1.0;
+    // Define class members
+    Servo   servo;
 
     @Override
     public void runOpMode() {
-        lineSlide = hardwareMap.get(DcMotor.class, "lineSlide");
+
         servo = hardwareMap.get(Servo.class, "armServo");
 
-        PinchServo pinchServo = new PinchServo(servo);
-
-        double[] positionHeights = {3.5, 13.5, 23.5, 33.5};
-        LinearSlide linearSlide = new LinearSlide(lineSlide, positionHeights, 1120, 1.5); //AndyMark NeveRest 40:1
-
+        // Wait for the start button
+        telemetry.addData(">", "Press Start" );
+        telemetry.update();
         waitForStart();
-        while (opModeIsActive()) {
 
-            if(gamepad1.dpad_down){
-                linearSlide.moveToPosition(SLIDE_SPEED, 0);
-            }
 
-            if(gamepad1.dpad_left){
-                linearSlide.moveToPosition(SLIDE_SPEED, 1);
+        // Scan servo till stop pressed.
+        while(opModeIsActive()){
 
-            }
-            if(gamepad1.dpad_up){
-                linearSlide.moveToPosition(SLIDE_SPEED, 2);
-
-            }
-            if(gamepad1.dpad_right){
-                linearSlide.moveToPosition(SLIDE_SPEED, 3);
-
-            }
-
-            if(gamepad1.b){
-                pinchServo.pinchObject();
+            if(gamepad1.y){
+                servo.setPosition(1.0);
             }
 
             if(gamepad1.a){
-                pinchServo.releaseObject();
+                servo.setPosition(0.0);
             }
+
 
         }
     }
 }
-
-
