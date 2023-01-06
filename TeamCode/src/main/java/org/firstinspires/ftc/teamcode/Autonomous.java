@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -71,7 +72,8 @@ public class Autonomous extends LinearOpMode {
         //position 3 (blue)
         //move right
 
-        /*double total = 44;
+        */
+/*double total = 44;
         double delta = 16;
         double offset = 3;
         drive.straight(DRIVE_SPEED, delta);
@@ -81,7 +83,8 @@ public class Autonomous extends LinearOpMode {
         String colorDetected = colorSensor.colorPath();
 
         drive.sideways(DRIVE_SPEED, offset);
-        drive.straight(DRIVE_SPEED, total-delta);*/
+        drive.straight(DRIVE_SPEED, total-delta);*//*
+
 
 
 
@@ -90,7 +93,8 @@ public class Autonomous extends LinearOpMode {
         linearSlide.moveToPosition(1.0, 1);
         arm.releaseObject();
 
-        /*drive.sideways(DRIVE_SPEED, -2.0);
+        */
+/*drive.sideways(DRIVE_SPEED, -2.0);
 
 
         telemetry.addData("red", color.red());
@@ -107,42 +111,9 @@ public class Autonomous extends LinearOpMode {
 
         if (colorDetected.equals("blue")) {
             drive.sideways(DRIVE_SPEED, 24);
-        }*/
-
-
-/*      drive.straight(DRIVE_SPEED, -15.5);
-        drive.sideways(DRIVE_SPEED, 8.75);
-
-        colorSensor.getColors();
-
-        drive.sideways(DRIVE_SPEED, -8.75);
-
-        drive.straight(DRIVE_SPEED, -15.5);
-        drive.sideways(DRIVE_SPEED, -12.75);
-        drive.straight(DRIVE_SPEED, 11.5);
-
-
-        linearSlide.moveToPosition(SLIDE_SPEED, 1);
-        arm.releaseObject();
-
-        drive.straight(DRIVE_SPEED, -11.5);
-        drive.sideways(DRIVE_SPEED,12.75);
-
-        String colorDetected = colorSensor.colorPath();
-        telemetry.addData("Color Detected", colorDetected);
-        if (colorDetected.equals("red")) {
-
-            drive.sideways(DRIVE_SPEED, -24);
-            drive.straight(DRIVE_SPEED, 26);
-        }
-        if (colorDetected.equals("green")) {
-            drive.straight(DRIVE_SPEED, 26);
-        }
-        if (colorDetected.equals("blue")) {
-            drive.sideways(DRIVE_SPEED, -24);
-            drive.straight(DRIVE_SPEED, 26);
-        }*/
+        }*//*
 
     }
 
 }
+*/

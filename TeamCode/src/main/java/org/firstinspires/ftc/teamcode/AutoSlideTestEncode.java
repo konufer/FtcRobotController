@@ -29,12 +29,10 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * Mecanum Wheel OpMode that uses a gyro
@@ -43,14 +41,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * Right Stick rotates the robot
  */
 
-@TeleOp(name="Auto Slide Test", group="Robot")
+@TeleOp(name="Auto Slide Test Encode", group="Robot")
 
-public class AutoSlideTest extends LinearOpMode {
+public class AutoSlideTestEncode extends LinearOpMode {
 
     public DcMotor lineSlide;
     public Servo servo;
 
-    public static double SLIDE_SPEED = 1.0;
+    public static double SLIDE_SPEED = 0.5;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -59,11 +57,37 @@ public class AutoSlideTest extends LinearOpMode {
 
         PinchServo pinchServo = new PinchServo(servo);
 
-        LinearSlideTime linearSlide = new LinearSlideTime(lineSlide);
+        LinearSlide linearSlide = new LinearSlide(lineSlide, 1120, 1.5); //AndyMark NeveRest 40:1
 
         waitForStart();
+        while (opModeIsActive()) {
 
-        linearSlide.moveForTime(SLIDE_SPEED, 3.0);
+            /*if(gamepad1.dpad_down){
+                linearSlide.moveToPosition(-SLIDE_SPEED,1000);
+            }*/
+
+            if(gamepad1.dpad_left){
+                linearSlide.moveToPosition(-SLIDE_SPEED, 5);
+
+            }
+            /*if(gamepad1.dpad_up){
+                linearSlide.moveToPosition(-SLIDE_SPEED, 2000);
+
+            }*/
+            if(gamepad1.dpad_right){
+                linearSlide.moveToPosition(SLIDE_SPEED, 5);
+
+            }
+
+            if(gamepad1.b){
+                pinchServo.pinchObject();
+            }
+
+            if(gamepad1.a){
+                pinchServo.releaseObject();
+            }
+
+        }
     }
 }
 

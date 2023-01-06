@@ -20,7 +20,7 @@ public class LinearSlide {
 
 
 
-    public LinearSlide(DcMotor lineSlide, double[] positionHeights, double COUNTS_PER_MOTOR_REV, double WHEEL_DIAMETER_INCHES){
+    public LinearSlide(DcMotor lineSlide /*, double[] positionHeights*/, double COUNTS_PER_MOTOR_REV, double WHEEL_DIAMETER_INCHES){
         this.lineSlide = lineSlide;
 
         currentPosition = 0;
@@ -36,13 +36,15 @@ public class LinearSlide {
 
     }
 
-    public double distanceToMove(int desiredPosition){
+    /*public double distanceToMove(int desiredPosition){
         double distanceDiff = positionHeights[desiredPosition] - positionHeights[currentPosition];
         return distanceDiff;
     }
 
     public void moveToPosition(double speed, int desiredPosition){
+        //double distance = distanceToMove(desiredPosition);
         double distance = distanceToMove(desiredPosition);
+
 
         int moveCounts = (int)(distance * COUNTS_PER_INCH);
         lineSlideTarget = lineSlide.getCurrentPosition() + moveCounts;
@@ -52,14 +54,33 @@ public class LinearSlide {
 
         while(lineSlide.isBusy()){
             lineSlide.setPower(speed);
-            /*telemetry.addData("Running to",  " %7d", lineSlideTarget);
+            *//*telemetry.addData("Running to",  " %7d", lineSlideTarget);
             telemetry.addData("Currently at",  " at %7d", lineSlide.getCurrentPosition());
-            telemetry.update();*/
+            telemetry.update();*//*
         }
 
         lineSlide.setPower(0.0);
+    }*/
+
+    public void moveToPosition(double speed, double inches) {
+        int newSlideTarget;
+
+        newSlideTarget = lineSlide.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
+
+        lineSlide.setTargetPosition(newSlideTarget);
+
+        lineSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        lineSlide.setPower(Math.abs(speed));
+
+        while (lineSlide.isBusy()) {
+
+        }
+
+        lineSlide.setPower(0);
+
+        lineSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
     }
-
-
 }
 
