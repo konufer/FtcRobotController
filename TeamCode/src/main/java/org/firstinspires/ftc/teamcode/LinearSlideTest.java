@@ -45,7 +45,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name="Auto Slide Test", group="Robot")
 
-public class AutoSlideTest extends LinearOpMode {
+public class LinearSlideTest extends LinearOpMode {
 
     public DcMotor lineSlide;
     public Servo servo;
@@ -63,7 +63,7 @@ public class AutoSlideTest extends LinearOpMode {
 
         waitForStart();
 
-        linearSlide.moveForTime(SLIDE_SPEED, 3.0);
+        linearSlide.moveForTime(SLIDE_SPEED, 4.0);
     }
 }
 

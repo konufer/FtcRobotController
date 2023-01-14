@@ -49,17 +49,13 @@ import org.firstinspires.ftc.teamcode.GyroClass;
         driveStraight(DRIVE_SPEED, 24.0, 0.0);    // Drive Forward 24"
         turnToHeading( TURN_SPEED, -45.0);               // Turn  CW to -45 Degrees
         holdHeading( TURN_SPEED, -45.0, 0.5);   // Hold -45 Deg heading for a 1/2 second
-
         driveStraight(DRIVE_SPEED, 17.0, -45.0);  // Drive Forward 17" at -45 degrees (12"x and 12"y)
         turnToHeading( TURN_SPEED,  45.0);               // Turn  CCW  to  45 Degrees
         holdHeading( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
-
         driveStraight(DRIVE_SPEED, 17.0, 45.0);  // Drive Forward 17" at 45 degrees (-12"x and 12"y)
         turnToHeading( TURN_SPEED,   0.0);               // Turn  CW  to 0 Degrees
         holdHeading( TURN_SPEED,   0.0, 1.0);    // Hold  0 Deg heading for 1 second
-
         driveStraight(DRIVE_SPEED,-48.0, 0.0);    // Drive in Reverse 48" (should return to approx. staring position)
-
 */
 
 
@@ -155,7 +151,7 @@ public class MoveRobot {
             turnSpeed = getSteeringCorrection(heading, P_DRIVE_GAIN);
             // if driving in reverse, the motor correction also needs to be reversed
             if (distance < 0)
-                    turnSpeed *= -1.0;
+                turnSpeed *= -1.0;
 
             moveRobot(driveSpeed, turnSpeed);
 
@@ -167,7 +163,7 @@ public class MoveRobot {
         frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
+    }
 
 
     public void turnToHeading(double maxTurnSpeed, double heading) {

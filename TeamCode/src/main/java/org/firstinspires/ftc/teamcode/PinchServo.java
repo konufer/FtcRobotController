@@ -15,11 +15,16 @@ public class PinchServo {
     }
 
     public void pinchObject(){
-    pinchServo.setPosition(1.0);
+    pinchServo.setPosition(0.0);
     }
 
     public void releaseObject(){
-        pinchServo.setPosition(0.0);
+        runtime.reset();
+
+        pinchServo.setPosition(1.0);
+        while(runtime.seconds() < 2){
+
+        }
     }
 
 }

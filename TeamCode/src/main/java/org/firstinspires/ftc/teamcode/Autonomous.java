@@ -1,4 +1,3 @@
-/*
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -21,7 +20,7 @@ public class Autonomous extends LinearOpMode {
 
     static final double DRIVE_SPEED = 0.4;
     static final double TURN_SPEED = 0.6;
-    static final double SLIDE_SPEED = 0.5;
+    static final double SLIDE_SPEED = 1.0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -43,17 +42,12 @@ public class Autonomous extends LinearOpMode {
         NewMoveRobot drive = new NewMoveRobot(frontLeft, frontRight, backLeft, backRight, 560, 2.95276); //REV HD Hex motor
         PinchServo arm = new PinchServo(servo);
 
-        double[] positionHeights = {3.5, 13.5, 23.5, 33.5};
-        LinearSlide linearSlide = new LinearSlide(lineSlide, positionHeights, 1120, 1.5); //AndyMark NeveRest 40:1
+        LinearSlideTime linearSlide = new LinearSlideTime(lineSlide); //AndyMark NeveRest 40:1
 
 
         telemetry.addData("Status", "Ready to run");
         telemetry.update();
         waitForStart();
-
-        //Begin doing stuff
-        arm.pinchObject();
-        linearSlide.moveToPosition(SLIDE_SPEED, 0);
 
         //forward a little
         //read signal cone
@@ -72,10 +66,10 @@ public class Autonomous extends LinearOpMode {
         //position 3 (blue)
         //move right
 
-        */
-/*double total = 44;
+
+double total = 44;
         double delta = 16;
-        double offset = 3;
+        double offset = 1.5;
         drive.straight(DRIVE_SPEED, delta);
         drive.sideways(DRIVE_SPEED, -offset);
 
@@ -83,24 +77,24 @@ public class Autonomous extends LinearOpMode {
         String colorDetected = colorSensor.colorPath();
 
         drive.sideways(DRIVE_SPEED, offset);
-        drive.straight(DRIVE_SPEED, total-delta);*//*
+        drive.straight(DRIVE_SPEED, total-delta);
 
 
 
 
-        //drive.sideways(DRIVE_SPEED, 2.0);
+        drive.sideways(DRIVE_SPEED, 11.0);
 
-        linearSlide.moveToPosition(1.0, 1);
+        linearSlide.moveForTime(SLIDE_SPEED, 3.8);
+
+        drive.straight(DRIVE_SPEED, 6.5);
+
         arm.releaseObject();
 
-        */
-/*drive.sideways(DRIVE_SPEED, -2.0);
+        drive.straight(DRIVE_SPEED, -6.5);
 
 
-        telemetry.addData("red", color.red());
-        telemetry.addData("blue", color.blue());
-        telemetry.addData("green", color.green());
-        telemetry.update();
+
+        drive.sideways(DRIVE_SPEED, -11.0);
 
 
         if (colorDetected.equals("red")) {
@@ -111,9 +105,9 @@ public class Autonomous extends LinearOpMode {
 
         if (colorDetected.equals("blue")) {
             drive.sideways(DRIVE_SPEED, 24);
-        }*//*
+        }
 
     }
 
 }
-*/
+

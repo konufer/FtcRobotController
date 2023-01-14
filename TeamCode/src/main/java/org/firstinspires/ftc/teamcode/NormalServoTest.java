@@ -55,11 +55,11 @@ public class NormalServoTest extends LinearOpMode {
         // Scan servo till stop pressed.
         while(opModeIsActive()){
 
-            if(gamepad1.y){
+            if(gamepad1.a){
                 servo.setPosition(1.0);
             }
 
-            if(gamepad1.a){
+            if(gamepad1.b){
                 servo.setPosition(0.0);
             }
 
