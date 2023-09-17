@@ -30,9 +30,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
@@ -44,52 +45,25 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name="Auto Slide Test", group="Robot")
 
-public class AutoSlideTest extends LinearOpMode {
+public class LinearSlideTest extends LinearOpMode {
 
-    public DcMotor lineSlide = null;
-    public CRServo servo;
+    public DcMotor lineSlide;
+    public Servo servo;
+
+    public static double SLIDE_SPEED = 1.0;
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         lineSlide = hardwareMap.get(DcMotor.class, "lineSlide");
-        servo = hardwareMap.get(CRServo.class, "armServo");
+        servo = hardwareMap.get(Servo.class, "armServo");
 
         PinchServo pinchServo = new PinchServo(servo);
 
-        double[] positionHeights = {3.5, 13.5, 23.5, 33.5};
-        double COUNTS_PER_MOTOR_REV = 1120;  //AndyMark NeveRest 40:1
-        double WHEEL_DIAMETER_INCHES = 1.5;
-        LinearSlide linearSlide = new LinearSlide(lineSlide, positionHeights, COUNTS_PER_MOTOR_REV, WHEEL_DIAMETER_INCHES);
+        LinearSlideTime linearSlide = new LinearSlideTime(lineSlide);
 
+        waitForStart();
 
-        while (opModeIsActive()) {
-
-            if(gamepad1.dpad_down){
-                linearSlide.moveToPosition(0);
-            }
-
-            if(gamepad1.dpad_left){
-                linearSlide.moveToPosition(1);
-
-            }
-            if(gamepad1.dpad_up){
-                linearSlide.moveToPosition(2);
-
-            }
-            if(gamepad1.dpad_right){
-                linearSlide.moveToPosition(3);
-
-            }
-
-            if(gamepad1.b){
-                pinchServo.pinchObject();
-            }
-
-            if(gamepad1.a){
-                pinchServo.releaseObject();
-            }
-
-        }
+        linearSlide.moveForTime(SLIDE_SPEED, 4.0);
     }
 }
 
