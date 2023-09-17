@@ -1,30 +1,29 @@
 package org.firstinspires.ftc.teamcode;
 
 import static android.os.SystemClock.sleep;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.CRServo;
 
 public class PinchServo {
 
-    public Servo pinchServo;
+    public CRServo pinchServo;
 
-    ElapsedTime runtime = new ElapsedTime();
-
-    public PinchServo(Servo pinchServo){
+    public PinchServo(CRServo pinchServo){
         this.pinchServo = pinchServo;
     }
 
+    public void stop(){
+        //this stops the servo, it should be 0 but the servo is weird
+        pinchServo.setPower(-0.05);
+    }
+
     public void pinchObject(){
-    pinchServo.setPosition(0.0);
+        pinchServo.setPower(1.0);
     }
 
     public void releaseObject(){
-        runtime.reset();
-
-        pinchServo.setPosition(1.0);
-        while(runtime.seconds() < 2){
-
-        }
+    pinchServo.setPower(-1.0);
+    sleep(500);
+    stop();
     }
 
 }
