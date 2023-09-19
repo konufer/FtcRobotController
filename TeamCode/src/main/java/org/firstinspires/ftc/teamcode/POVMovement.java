@@ -33,7 +33,6 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -54,10 +53,7 @@ public class POVMovement extends LinearOpMode {
     public DcMotor frontLeft  = null;
     public DcMotor backLeft  = null;
     public DcMotor backRight  = null;
-
-    public DcMotor lineSlide = null;
-
-    Servo servo;
+    
     public static BNO055IMU imu;
 
     @Override
@@ -67,9 +63,6 @@ public class POVMovement extends LinearOpMode {
         frontRight  = hardwareMap.get(DcMotor.class, "frontRight"); // port 1
         backLeft  = hardwareMap.get(DcMotor.class, "backLeft"); //  port 2
         backRight  = hardwareMap.get(DcMotor.class, "backRight"); // port 3
-
-        lineSlide = hardwareMap.get(DcMotor.class, "lineSlide");
-        servo = hardwareMap.get(Servo.class, "armServo");
 
         //Motors on the left need to be reversed
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -146,27 +139,9 @@ public class POVMovement extends LinearOpMode {
             backLeft.setPower(DAMPENER * v3Final);
             backRight.setPower(DAMPENER * v4Final);
 
-            if (gamepad1.right_trigger != 0){
-                lineSlide.setPower(-gamepad1.right_trigger);
-            }
-            else if (gamepad1.left_trigger != 0){
-                lineSlide.setPower(gamepad1.left_trigger);
-            }
-
-            else{
-                lineSlide.setPower(0);
-            }
-
-
-            if(gamepad1.a){
-                servo.setPosition(1.0);
-            }
-
-            if(gamepad1.b){
-                servo.setPosition(0.0);
-            }
             telemetry.update();
         }
+
     }
 }
 
