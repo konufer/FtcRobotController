@@ -66,7 +66,9 @@ public class POVMovement extends LinearOpMode {
 
         //Motors on the left need to be reversed
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        frontRight.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
+        backRight.setDirection(DcMotor.Direction.REVERSE);
 
         //This initializes the gyro sensor within the expansion hub
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();

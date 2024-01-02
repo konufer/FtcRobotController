@@ -25,7 +25,8 @@
  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+ *//*
+
 
 package org.firstinspires.ftc.teamcode;
 
@@ -36,12 +37,14 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+*/
 /**
  * Mecanum Wheel OpMode that uses a gyro
  * All controls will move the robot relitive to your position (when you started the program)
  * Left Stick translates the robot
  * Right Stick rotates the robot
- */
+ *//*
+
 
 @TeleOp(name="Auto Slide Test", group="Robot")
 
@@ -68,3 +71,4 @@ public class LinearSlideTest extends LinearOpMode {
 }
 
 
+*/

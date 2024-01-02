@@ -33,7 +33,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.GyroClass;
 
 /**
  * Move a Mecanum wheel robot using gyro and encoders
