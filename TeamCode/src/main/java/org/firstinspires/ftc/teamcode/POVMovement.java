@@ -46,64 +46,91 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class POVMovement extends LinearOpMode {
 
-    static final double DAMPENER = 0.75;
+    static final double DRIVE_DAMPENER = 0.75;
     static final double TURN_DAMPENER = 0.8;
+    static final double BASE_DAMPENER = 0.2;
+    static final double GEAR_DAMPENER = 0.2;
 
     public DcMotor frontRight  = null;
     public DcMotor frontLeft  = null;
     public DcMotor backLeft  = null;
     public DcMotor backRight  = null;
-    
+    public DcMotor baseMotor  = null;
+    public DcMotor gearMotor  = null;
+
+/*    public int initialBasePosition = -9000;
+    public int initialGearPosition = -9000;*/
+
     public static BNO055IMU imu;
 
-    @Override
-    public void runOpMode() {
-        // Map motors to varibles
-        frontLeft  = hardwareMap.get(DcMotor.class, "frontLeft"); // port 0
-        frontRight  = hardwareMap.get(DcMotor.class, "frontRight"); // port 1
-        backLeft  = hardwareMap.get(DcMotor.class, "backLeft"); //  port 2
-        backRight  = hardwareMap.get(DcMotor.class, "backRight"); // port 3
 
-        //Motors on the left need to be reversed
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        frontRight.setDirection(DcMotor.Direction.REVERSE);
-        backLeft.setDirection(DcMotor.Direction.REVERSE);
-        backRight.setDirection(DcMotor.Direction.REVERSE);
+    public String bothMotorsLocked(){
+        int baseTarget = baseMotor.getCurrentPosition() + 5;
+        baseMotor.setTargetPosition(baseTarget);
+        baseMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        baseMotor.setPower(1.0);
 
-        //This initializes the gyro sensor within the expansion hub
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
+        int gearTarget = gearMotor.getCurrentPosition() + 5;
+        gearMotor.setTargetPosition(gearTarget);
+        gearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        gearMotor.setPower(1.0);
 
-        GyroClass gyro = new GyroClass(imu);
-        gyro.resetHeading();
-
-        MoveRobot move = new MoveRobot(frontLeft, frontRight, backLeft, backRight, gyro);
-        ElapsedTime runtime = new ElapsedTime();
-
-   /**     // Ensure the robot is stationary.  Reset the encoders and set the motors to BRAKE mode
-        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        frontLeft.setMode(DcMotor.DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRight.setMode(DcMotor.DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);   **/
-
-        //For testing purposes
-        while (opModeInInit()) {
-            telemetry.addData(">", "Robot Heading = %4.0f", gyro.getRawHeading());
+        while (true) {
+            telemetry.addData("Base/Gear Targets: ",  "%7d, %7d", baseTarget, gearTarget);
+            telemetry.addData("Currently at: ",  "%7d, %7d", baseMotor.getCurrentPosition(), gearMotor.getCurrentPosition());
             telemetry.update();
+
+            if (gamepad1.left_stick_y != 0){
+                unlockMotor(baseMotor);
+                return "base";
+            }
+
+            if (gamepad1.right_stick_y != 0){
+                unlockMotor(gearMotor);
+                return "gear";
+            }
+
+            if (gamepad1.a) {
+                unlockMotor(baseMotor);
+                unlockMotor(gearMotor);
+                return "drive";
+            }
+        }
+    }
+
+    public void oneMotorUnlocked(String unlockedMotor){
+        if (unlockedMotor == "base"){
+            while (true) {
+                telemetry.addData("Base/Gear Targets: ",  "%7d, 7d", 0,0);
+                telemetry.addData("Currently at: ",  "%7d, %7d", baseMotor.getCurrentPosition(), gearMotor.getCurrentPosition());
+                telemetry.update();
+
+                baseMotor.setPower(-gamepad1.left_stick_y * BASE_DAMPENER);
+
+                if (baseMotor.getPower() == 0){
+                    break;
+                }
+            }
         }
 
-        waitForStart();
+        if (unlockedMotor == "gear"){
+            while (true) {
+                telemetry.addData("Base/Gear Targets: ",  "%7d, 7d", 0,0);
+                telemetry.addData("Currently at: ",  "%7d, %7d", baseMotor.getCurrentPosition(), gearMotor.getCurrentPosition());
+                telemetry.update();
 
-        while (opModeIsActive()) {
-            telemetry.addData(">", "Robot Heading = %4.0f", gyro.getRawHeading());
+                gearMotor.setPower(gamepad1.right_stick_y * GEAR_DAMPENER);
 
+                if (gearMotor.getPower() == 0){
+                    break;
+                }
+            }
+        }
+    }
+
+    public void driveRobot(){
+
+        while (true){
             //The Mecanum Wheel math
             double r = Math.hypot(gamepad1.left_stick_x, -gamepad1.left_stick_y);
             double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI/4;
@@ -136,12 +163,93 @@ public class POVMovement extends LinearOpMode {
                 v4Final = -1 * v4Final;
             }
 
-            frontLeft.setPower(DAMPENER * v1Final);
-            frontRight.setPower(DAMPENER * v2Final);
-            backLeft.setPower(DAMPENER * v3Final);
-            backRight.setPower(DAMPENER * v4Final);
+            frontLeft.setPower(DRIVE_DAMPENER * v1Final);
+            frontRight.setPower(DRIVE_DAMPENER * v2Final);
+            backLeft.setPower(DRIVE_DAMPENER * v3Final);
+            backRight.setPower(DRIVE_DAMPENER * v4Final);
 
-            telemetry.update();
+            if (gamepad1.a){
+                break;
+            }
+        }
+    }
+
+    public void unlockMotor(DcMotor motor){
+        motor.setPower(0);
+        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    @Override
+    public void runOpMode() {
+        // Map motors to varibles
+        frontLeft  = hardwareMap.get(DcMotor.class, "frontLeft"); // port 0
+        frontRight  = hardwareMap.get(DcMotor.class, "frontRight"); // port 1
+        backLeft  = hardwareMap.get(DcMotor.class, "backLeft"); //  port 2
+        backRight  = hardwareMap.get(DcMotor.class, "backRight"); // port 3
+
+        baseMotor = hardwareMap.get(DcMotor.class, "baseMotor"); // expansion hub port 0
+        gearMotor = hardwareMap.get(DcMotor.class, "gearMotor"); // expansion hub port 1
+
+        baseMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        baseMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        //Motors on the left need to be reversed
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        //frontRight.setDirection(DcMotor.Direction.REVERSE);
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        // backRight.setDirection(DcMotor.Direction.REVERSE);
+
+        //This initializes the gyro sensor within the expansion hub
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
+
+        GyroClass gyro = new GyroClass(imu);
+        gyro.resetHeading();
+
+        MoveRobot move = new MoveRobot(frontLeft, frontRight, backLeft, backRight, gyro);
+        ElapsedTime runtime = new ElapsedTime();
+
+   /**     // Ensure the robot is stationary.  Reset the encoders and set the motors to BRAKE mode
+        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        frontLeft.setMode(DcMotor.DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRight.setMode(DcMotor.DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);   **/
+
+        //For testing purposes
+        while (opModeInInit()) {
+//            telemetry.addData(">", "Robot Heading = %4.0f", gyro.getRawHeading());
+//            telemetry.update();
+        }
+
+        waitForStart();
+
+        while (opModeIsActive()) {
+            String unlockedMotor = bothMotorsLocked(); // method returns when one of the motors is unlocked
+
+//            if (driveMode){
+//                driveRobot();
+//                continue;
+//            }
+
+            if (unlockedMotor.equals("drive")){
+                driveRobot();
+                continue;
+            }
+            oneMotorUnlocked(unlockedMotor);
+
+
+//            bothMotorsLocked();
+//
+//            while (!gamepad1.b){
+//                driveRobot();
+//            }
         }
 
     }
